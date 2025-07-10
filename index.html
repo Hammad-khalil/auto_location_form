@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KPOs Attendance</title>
+</head>
+<body>
+  <h2>Submitting Your Location...</h2>
+  <script>
+    navigator.geolocation.getCurrentPosition(function(position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const location = lat + "," + lng;
+
+      const name = prompt("Enter your name exactly as in dropdown:");
+      const action = prompt("Sign In or Sign Out?");
+
+      const data = new URLSearchParams();
+      data.append("entry.1363975204", name);      // ✅ Name
+      data.append("entry.711139293", action);     // ✅ Action
+      data.append("entry.821867819", location);   // ✅ Location
+
+      fetch("https://docs.google.com/forms/d/e/1FAIpQLSdJF165d_c3IWZPjWIDLbpNPgy7b_3MYBP3PsSMI4180q_0Kg/formResponse", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data.toString()
+      }).then(() => {
+        alert("Form submitted with GPS!");
+      }).catch(() => {
+        alert("Failed to submit.");
+      });
+    }, function(error) {
+      alert("Location access denied or failed.");
+    });
+  </script>
+</body>
+</html>
